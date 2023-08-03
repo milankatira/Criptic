@@ -287,7 +287,7 @@ export default function SettingsDrawer() {
               <Scrollbar style={{ height: 'calc(100% - 64px)' }}>
                 <div className="pb-8">
                   <ThemeSwitcher />
-                  <LayoutSwitcher />
+                  {/* <LayoutSwitcher /> */}
                   <DirectionSwitcher />
                   <ColorSwitcher />
                 </div>

@@ -8,7 +8,6 @@ export default function ModernLayout({
 }: React.PropsWithChildren<{ contentClassName?: string }>) {
   return (
     <div className="ltr:xl:pl-72 rtl:xl:pr-72 ltr:2xl:pl-80 rtl:2xl:pr-80">
-      <Header />
       <Sidebar className="hidden xl:block" />
       <main
         className={cn(

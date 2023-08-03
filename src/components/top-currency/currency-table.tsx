@@ -2,6 +2,7 @@ import { ChevronDown } from '@/components/icons/chevron-down';
 import Scrollbar from '@/components/ui/scrollbar';
 import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
 import { useIsMounted } from '@/lib/hooks/use-is-mounted';
+import Link from 'next/link';
 import React from 'react';
 import {
   useFlexLayout,
@@ -10,18 +11,23 @@ import {
   useSortBy,
   useTable,
 } from 'react-table';
-import { Area, AreaChart, ResponsiveContainer } from 'recharts';
+import { Line, LineChart, ResponsiveContainer } from 'recharts';
 import { LongArrowLeft } from '../icons/long-arrow-left';
-import Button from '../ui/button/button';
 import { LongArrowRight } from '../icons/long-arrow-right';
+import Button from '../ui/button/button';
 
-function convertToArrayOfObjects(array: string | any[]) {
+function convertToArrayOfObjects(array: []) {
   const resultArray = [];
-
-  for (let i = 0; i < array.length; i++) {
+  const numericArray = array.map((value) => parseFloat(value));
+  const minValue = Math.min(...numericArray);
+  const maxValue = Math.max(...numericArray);
+  const normalizedData = numericArray.map(
+    (value) => (value - minValue) / (maxValue - minValue)
+  );
+  for (let i = 0; i < normalizedData.length; i++) {
     const obj = {
       name: i + 1,
-      value: array[i],
+      value:(normalizedData[i]),
     };
     resultArray.push(obj);
   }
@@ -40,30 +46,18 @@ const COLUMNS = [
     Header: 'Name',
     accessor: 'name',
     // @ts-ignore
-    Cell: ({ cell: { value } }) => (
+    Cell: ({ cell: { value, row } }) => (
       <div className="mb-5 grid grid-cols-3 gap-4 text-sm text-gray-900 last:mb-0 dark:text-white">
         <div className="col-span-2 flex items-center gap-2">
-          <span className="w-6 shrink-0">{value}</span>
+          <Link href={`/${row.original.uuid}`}>
+            <a className="w-6 shrink-0">{value}</a>
+          </Link>
         </div>
       </div>
     ),
     minWidth: 140,
     maxWidth: 260,
   },
-  // {
-  //   Header: '    24H Change',
-  //   accessor: 'name',
-  //   // @ts-ignore
-  //   Cell: ({ cell: { value } }) => (
-  //     <div className="mb-5 grid grid-cols-3 gap-4 text-sm text-gray-900 last:mb-0 dark:text-white">
-  //       <div className="col-span-2 flex items-center gap-2">
-  //         <span className="w-6 shrink-0">{value}</span>
-  //       </div>
-  //     </div>
-  //   ),
-  //   minWidth: 140,
-  //   maxWidth: 260,
-  // },
   {
     Header: () => (
       <div className="ltr:ml-auto ltr:text-right rtl:mr-auto rtl:text-left">
@@ -135,34 +129,19 @@ const COLUMNS = [
     accessor: 'sparkline',
     // @ts-ignore
     Cell: ({ cell: { value } }) => {
-
       return (
-        <div className="h-10 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={convertToArrayOfObjects(value)}>
-              <defs>
-                <linearGradient
-                  id="liquidity-gradient"
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
-                  <stop offset="5%" stopColor="#bc9aff" stopOpacity={0.5} />
-                  <stop offset="100%" stopColor="#7645D9" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <Area
-                type="natural"
-                dataKey="value"
-                stroke="#7645D9"
-                strokeWidth={1.5}
-                fill="url(#liquidity-gradient)"
-                dot={false}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+        <ResponsiveContainer width="100%" height={50}>
+          <LineChart data={convertToArrayOfObjects(value)}>
+            <Line
+              scale="log"
+              type="monotone"
+              dataKey="value"
+              stroke="#8884d8"
+              strokeWidth={2}
+              dot={false}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       );
     },
     minWidth: 200,
@@ -191,7 +170,7 @@ export default function TopCurrencyTable({
     nextPage,
     canPreviousPage,
     canNextPage,
-    pageOptions
+    pageOptions,
   } = useTable(
     {
       // @ts-ignore
@@ -206,8 +185,6 @@ export default function TopCurrencyTable({
   );
 
   const { pageIndex } = state;
-
-    console.log(page,data," =====>> page <<====");
 
   return (
     <div className="">

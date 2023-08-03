@@ -1,11 +1,6 @@
 import TopCurrencyTable from '@/components/top-currency/currency-table';
-import TransactionTable from '@/components/transaction/transaction-table';
-import OverviewChart from '@/components/ui/chats/overview-chart';
-import TopPools from '@/components/ui/top-pools';
-import cn from 'classnames';
 import { NextSeo } from 'next-seo';
 
-//images
 import { useQuery } from 'react-query';
 
 export default function ModernScreen() {
@@ -26,15 +21,12 @@ export default function ModernScreen() {
   };
 
   const { data, isLoading, error } = useQuery('posts', fetchPosts);
-  console.log(data?.coins, 'data');
   return (
     <>
       <NextSeo
         title="Criptic"
         description="Criptic - React Next Web3 NFT Crypto Dashboard Template"
       />
-
-
 
       <div className="my-8 sm:my-10">
         {data && data.coins && <TopCurrencyTable currencyChart={data?.coins} />}
