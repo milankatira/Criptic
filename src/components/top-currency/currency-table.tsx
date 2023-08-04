@@ -49,6 +49,7 @@ const COLUMNS = [
     Cell: ({ cell: { value, row } }) => (
       <div className="mb-5 grid grid-cols-3 gap-4 text-sm text-gray-900 last:mb-0 dark:text-white">
         <div className="col-span-2 flex items-center gap-2">
+          <img src={row.original.iconUrl} className='h-6 w-6' />
           <Link href={`/${row.original.uuid}`}>
             <a className="w-6 shrink-0">{value}</a>
           </Link>
@@ -154,8 +155,7 @@ export default function TopCurrencyTable({
 }: {
   currencyChart: [any];
 }) {
-  const isMounted = useIsMounted();
-  const breakpoint = useBreakpoint();
+
   const data = React.useMemo(() => currencyChart, []);
   const columns = React.useMemo(() => COLUMNS, []);
 

@@ -44,6 +44,7 @@
     "react-dropzone": "^14.2.2",
     "react-hook-form": "^7.36.0",
     "react-query": "^3.39.3",
+    "react-responsive-carousel": "^3.2.23",
     "react-share": "^4.4.0",
     "react-table": "^7.7.0",
     "react-use": "^17.3.2",

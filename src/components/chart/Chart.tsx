@@ -20,11 +20,6 @@ export const options = {
       radius: 1,
     },
   },
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-  },
 };
 
 const Chart: React.FC<ChartProps> = ({ data }) => {

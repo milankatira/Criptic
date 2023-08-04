@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import Header from '@/layouts/header/header';
 import Sidebar from '@/layouts/sidebar/_default';
 
 export default function ModernLayout({

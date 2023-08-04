@@ -1,5 +1,6 @@
 import Chart from '@/components/chart/Chart';
 import { ChevronDown } from '@/components/icons/chevron-down';
+import Loader from '@/components/ui/loader';
 import RootLayout from '@/layouts/_root-layout';
 import type { NextPageWithLayout } from '@/types';
 import { Listbox, Transition } from '@headlessui/react';
@@ -73,6 +74,7 @@ const LiquidityPage: NextPageWithLayout = () => {
   const [selectedItem, setSelectedItem] = useState<SortOption>(sort[0]);
 
   const fetchPosts = async (selectedItem: SortOption) => {
+    //https://coinranking1.p.rapidapi.com/coin/Qwsogvtv82FCd/history?timePeriod=7d
     const url = `https://coinranking1.p.rapidapi.com/coin/${id}/history?timePeriod=${selectedItem.id}`;
     const options = {
       method: 'GET',
@@ -92,20 +94,15 @@ const LiquidityPage: NextPageWithLayout = () => {
     return date.toDateString(); // Adjust the format as needed
   };
 
-  const { data, isLoading, error, refetch } = useQuery(
-    'posts',
-    () => fetchPosts(selectedItem),
-    {
-      enabled: false, // Disable automatic fetching and caching
-    }
+  const { data, isFetching, error, refetch } = useQuery('posts', () =>
+    fetchPosts(selectedItem)
   );
 
   useEffect(() => {
     refetch();
-  }, []);
-  useEffect(() => {
-    refetch();
   }, [selectedItem]);
+
+  console.log(isFetching, 'isLoading ....');
 
   const tension = 0.9;
   const reversedData = data && data.length > 0 && [...data].reverse();
@@ -129,8 +126,15 @@ const LiquidityPage: NextPageWithLayout = () => {
         tension: tension,
       },
     ],
-    
   };
+
+  if (isFetching) {
+    return (
+      <div className="fixed z-50 grid h-full w-full place-content-center">
+        <Loader variant="blink" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -138,6 +142,7 @@ const LiquidityPage: NextPageWithLayout = () => {
         title="Liquidity"
         description="Criptic - React Next Web3 NFT Crypto Dashboard Template"
       />
+
       <SortList selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
       {/* @ts-ignore */}
       {data && <Chart data={userData} />}
