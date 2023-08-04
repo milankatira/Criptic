@@ -1,5 +1,4 @@
-import DrawersContainer from '@/components/drawer-views/container';
-import ModalsContainer from '@/components/modal-views/container';
+// import DrawersContainer from '@/components/drawer-views/container';
 import queryClient from '@/components/queryClient';
 import SettingsButton from '@/components/settings/settings-button';
 import SettingsDrawer from '@/components/settings/settings-drawer';
@@ -68,8 +67,7 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
             {getLayout(<Component {...pageProps} />)}
             <SettingsButton />
             <SettingsDrawer />
-            <ModalsContainer />
-            <DrawersContainer />
+            {/* <DrawersContainer /> */}
           </QueryClientProvider>
         </WalletProvider>
       </ThemeProvider>

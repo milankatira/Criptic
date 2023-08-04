@@ -16,12 +16,6 @@ import { Sun } from '@/components/icons/sun';
 import { Moon } from '@/components/icons/moon';
 import { LeftAlign } from '@/components/icons/left-align';
 import { RightAlign } from '@/components/icons/right-align';
-import { ModernLayoutIcon } from '@/components/icons/modern-layout-icon';
-import { RetroLayoutIcon } from '@/components/icons/retro-layout-icon';
-import { MinimalLayoutIcon } from '@/components/icons/minimal-layout-icon';
-import { ClassicLayoutIcon } from '@/components/icons/classic-layout-icon';
-import { useLayout } from '@/lib/hooks/use-layout';
-import { LAYOUT_OPTIONS } from '@/lib/constants';
 
 const ColorPreset = [
   {
@@ -151,57 +145,6 @@ function DirectionSwitcher() {
   );
 }
 
-// Component: LayoutSwitcher
-const LayoutIcons = {
-  [LAYOUT_OPTIONS.MODERN]: <ModernLayoutIcon />,
-  [LAYOUT_OPTIONS.MINIMAL]: <MinimalLayoutIcon />,
-  [LAYOUT_OPTIONS.RETRO]: <RetroLayoutIcon />,
-  [LAYOUT_OPTIONS.CLASSIC]: <ClassicLayoutIcon />,
-};
-
-function LayoutSwitcher() {
-  const router = useRouter();
-  const { pathname } = router;
-  const { layout, setLayout } = useLayout();
-  const layoutOptions = Object.values(LAYOUT_OPTIONS);
-  function handleLayoutChange(value: string) {
-    setLayout(value);
-    router.push(
-      {
-        pathname,
-        ...(value !== LAYOUT_OPTIONS.MODERN && {
-          query: {
-            layout: value,
-          },
-        }),
-      },
-      undefined,
-      { scroll: false }
-    );
-  }
-  return (
-    <div className="px-6 pt-8">
-      <h4 className="mb-4 text-sm font-medium text-gray-900 dark:text-white">
-        Layout
-      </h4>
-      <RadioGroup
-        value={layout ?? LAYOUT_OPTIONS.MODERN}
-        onChange={(value) => handleLayoutChange(value)}
-        className="grid grid-cols-2 gap-5 "
-      >
-        {layoutOptions.map((option) => (
-          <RadioGroup.Option key={option} value={option}>
-            {({ checked }) => (
-              <SwitcherButton title={option} checked={checked}>
-                {LayoutIcons[option]}
-              </SwitcherButton>
-            )}
-          </RadioGroup.Option>
-        ))}
-      </RadioGroup>
-    </div>
-  );
-}
 
 // Component: ColorSwitcher
 function ColorSwitcher() {

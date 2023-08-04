@@ -78,7 +78,7 @@ export default function Sidebar({ className }: { className?: string }) {
             <>
               <div className="mt-5 2xl:mt-8" onClick={() => setOpen(!open)}>
                 {menuItems.map((item, index) => (
-                  <MenuItem key={index} href="" icon={item.icon} />
+                  <MenuItem key={index} href="" />
                 ))}
               </div>
               <div

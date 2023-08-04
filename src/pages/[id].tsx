@@ -94,15 +94,15 @@ const LiquidityPage: NextPageWithLayout = () => {
     return date.toDateString(); // Adjust the format as needed
   };
 
-  const { data, isFetching, error, refetch } = useQuery('posts', () =>
-    fetchPosts(selectedItem)
+  const { data, isFetching, error, refetch } = useQuery(
+    'posts',
+    () => fetchPosts(selectedItem),
   );
 
   useEffect(() => {
     refetch();
   }, [selectedItem]);
 
-  console.log(isFetching, 'isLoading ....');
 
   const tension = 0.9;
   const reversedData = data && data.length > 0 && [...data].reverse();
@@ -126,6 +126,7 @@ const LiquidityPage: NextPageWithLayout = () => {
         tension: tension,
       },
     ],
+    
   };
 
   if (isFetching) {
@@ -143,6 +144,7 @@ const LiquidityPage: NextPageWithLayout = () => {
         description="Criptic - React Next Web3 NFT Crypto Dashboard Template"
       />
 
+    
       <SortList selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
       {/* @ts-ignore */}
       {data && <Chart data={userData} />}

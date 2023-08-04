@@ -49,7 +49,7 @@ export default function ModernScreen() {
           </div>
         )}
         {!isFetching && <div className="mb-12">
-          <h2 className="mb-8">Global Crypto Stats</h2>
+          <h2 className="mb-8 text-xl">Global Crypto Stats</h2>
           <div className="mt-4 flex w-full flex-row">
             <div className="w-1/2">
               <p className="text-gray-500">Total Cryptocurrencies</p>

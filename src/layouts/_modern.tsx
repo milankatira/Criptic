@@ -6,11 +6,11 @@ export default function ModernLayout({
   contentClassName,
 }: React.PropsWithChildren<{ contentClassName?: string }>) {
   return (
-    <div className="ltr:xl:pl-72 rtl:xl:pr-72 ltr:2xl:pl-80 rtl:2xl:pr-80">
-      <Sidebar className="hidden xl:block" />
+    <div className="w-full">
+      <Sidebar className="xl:block" />
       <main
         className={cn(
-          'min-h-[100vh] px-4 pt-4 pb-16 sm:px-6 sm:pb-20 lg:px-8 xl:pb-24 3xl:px-10 3xl:pt-0.5',
+          'w-full md:w-full min-h-[100vh] px-4 pt-4 pb-16 sm:px-6 sm:pb-20 lg:px-8 xl:pb-24 3xl:px-10 3xl:pt-0.5',
           contentClassName
         )}
       >

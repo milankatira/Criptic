@@ -68,6 +68,7 @@ export default function Farms() {
           data?.length > 0 &&
           data.map(
             (item: {
+              url: string | undefined;
               datePublished: string | Date;
               image: { thumbnail: { contentUrl: any } };
               name: string;
@@ -92,7 +93,9 @@ export default function Farms() {
                 <div className="h-full overflow-hidden  rounded-lg border-2 border-gray-200 border-opacity-60 p-6">
                   <div className="flex flex-row gap-2">
                     <h2 className="title-font mb-1 text-xl font-bold">
-                      {item.name}
+                      <a href={item.url} target="_blank" rel="noreferrer">
+                        {item.name}
+                      </a>
                     </h2>
                     <img
                       className="h-28 w-28 rounded-lg object-cover object-center"

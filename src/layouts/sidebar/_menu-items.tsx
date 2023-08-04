@@ -1,6 +1,4 @@
 import routes from '@/config/routes';
-import { HomeIcon } from '@/components/icons/home';
-import { FarmIcon } from '@/components/icons/farm';
 
 export const menuItems = [
   {
