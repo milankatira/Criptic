@@ -15,9 +15,12 @@ interface SortOption {
 }
 
 const sort: SortOption[] = [
+  { id: '3h', name: '3 h' },
   { id: '24h', name: '24 h' },
   { id: '7d', name: '7 days' },
+  { id: '30d', name: '30 days' },
   { id: '1y', name: '1 year' },
+  { id: '3y', name: '3 year' },
   { id: '5y', name: '5 year' },
 ];
 
@@ -74,7 +77,6 @@ const LiquidityPage: NextPageWithLayout = () => {
   const [selectedItem, setSelectedItem] = useState<SortOption>(sort[0]);
 
   const fetchPosts = async (selectedItem: SortOption) => {
-    //https://coinranking1.p.rapidapi.com/coin/Qwsogvtv82FCd/history?timePeriod=7d
     const url = `https://coinranking1.p.rapidapi.com/coin/${id}/history?timePeriod=${selectedItem.id}`;
     const options = {
       method: 'GET',
@@ -91,18 +93,38 @@ const LiquidityPage: NextPageWithLayout = () => {
 
   const formatDate = (timestamp: number): string => {
     const date = new Date(timestamp * 1000);
-    return date.toDateString(); // Adjust the format as needed
+    return date.toDateString(); 
   };
 
-  const { data, isFetching, error, refetch } = useQuery(
-    'posts',
-    () => fetchPosts(selectedItem),
+  const { data, isFetching, error, refetch } = useQuery('posts', () =>
+    fetchPosts(selectedItem)
   );
 
+  const fetchAdditionalData = async () => {
+    const url = `https://coinranking1.p.rapidapi.com/coin/${id}`;
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': '931d381d6amsh8e51610bc31ce58p1b4d51jsn6c9311055d68',
+        'X-RapidAPI-Host': 'coinranking1.p.rapidapi.com',
+      },
+    };
+
+    const response = await fetch(url, options);
+    const data = await response.json();
+    return data.data.coin; // Return the relevant data from the response
+  };
+
+  const {
+    data: cryptoDetails,
+    isFetching: isFetchingAdditionalData,
+    error: additionalDataError,
+  } = useQuery('additionalData', fetchAdditionalData);
+
+  console.log(cryptoDetails, 'additionalData');
   useEffect(() => {
     refetch();
   }, [selectedItem]);
-
 
   const tension = 0.9;
   const reversedData = data && data.length > 0 && [...data].reverse();
@@ -126,16 +148,99 @@ const LiquidityPage: NextPageWithLayout = () => {
         tension: tension,
       },
     ],
-    
   };
 
-  if (isFetching) {
+  if (isFetching || isFetchingAdditionalData) {
     return (
       <div className="fixed z-50 grid h-full w-full place-content-center">
         <Loader variant="blink" />
       </div>
     );
   }
+
+  const stats = [
+    {
+      title: 'Price to USD',
+      value: `$ ${
+        formatNumber(
+        cryptoDetails?.price && cryptoDetails?.price)}`,
+      // icon: <DollarCircleOutlined />,
+    },
+    {
+      title: 'Rank',
+      value: cryptoDetails?.rank,
+      //  icon: <NumberOutlined />
+    },
+    {
+      title: '24h Volume',
+      value: `$ ${
+        formatNumber(
+        cryptoDetails && cryptoDetails['24hVolume'] && cryptoDetails['24hVolume']
+      )}`,
+      // icon: <ThunderboltOutlined />,
+    },
+    {
+      title: 'Market Cap',
+      value: `$ ${
+        formatNumber(
+        cryptoDetails?.marketCap && cryptoDetails?.marketCap)}`,
+      // icon: <DollarCircleOutlined />,
+    },
+    {
+      title: 'All-time-high(daily avg.)',
+      value: `$ ${
+        formatNumber(
+        cryptoDetails?.allTimeHigh?.price && cryptoDetails?.allTimeHigh?.price
+      )}`,
+      // icon: <TrophyOutlined />,
+    },
+  ];
+
+  const genericStats = [
+    {
+      title: 'Number Of Markets',
+      value: cryptoDetails?.numberOfMarkets,
+      // icon: <FundOutlined />,
+    },
+    {
+      title: 'Number Of Exchanges',
+      value: cryptoDetails?.numberOfExchanges,
+      // icon: <MoneyCollectOutlined />,
+    },
+    {
+      title: 'Approved Supply',
+      value: cryptoDetails?.supply?.confirmed,
+      // icon: <ExclamationCircleOutlined />,
+    },
+    {
+      title: 'Total Supply',
+      value: `$ ${formatNumber(
+        cryptoDetails?.supply?.total && cryptoDetails?.supply?.total
+      )}`,
+      // icon: <ExclamationCircleOutlined />,
+    },
+    {
+      title: 'Circulating Supply',
+      value: `$ ${formatNumber(
+        cryptoDetails?.supply?.circulating && cryptoDetails?.supply?.circulating
+      )}`,
+      // icon: <ExclamationCircleOutlined />,
+    },
+  ];
+
+function formatNumber(number: string) {
+  if (parseInt(number) >= 1e12) {
+    return (parseInt(number) / 1e12).toFixed(1) + 'T';
+  } else if (parseInt(number) >= 1e9) {
+    return (parseInt(number) / 1e9).toFixed(1) + 'B';
+  } else if (parseInt(number) >= 1e6) {
+    return (parseInt(number) / 1e6).toFixed(1) + 'M';
+  } else if (parseInt(number) >= 1e3) {
+    return (parseInt(number) / 1e3).toFixed(1) + 'K';
+  } else {
+    return parseInt(number).toString();
+  }
+}
 
   return (
     <>
@@ -144,10 +249,75 @@ const LiquidityPage: NextPageWithLayout = () => {
         description="Criptic - React Next Web3 NFT Crypto Dashboard Template"
       />
 
-    
       <SortList selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
       {/* @ts-ignore */}
       {data && <Chart data={userData} />}
+
+      <br />
+      <br />
+      {!isFetching && (
+        <div className="flex flex-col gap-10 md:flex-row">
+          <div className="w-full md:w-1/2">
+            <div className="coin-value-statistics-heading">
+              <h3 className="text-xl font-bold">
+                {cryptoDetails?.name} Value Statistics
+              </h3>
+            </div>
+            {stats.map(({title, value }) => (
+              <div
+                className="flex max-w-md justify-between border-b border-gray-400 py-4"
+                key={title}
+              >
+                <div className="coin-stats-name">
+                  <span>{title}</span>
+                </div>
+                <span className="stats">{value}</span>
+              </div>
+            ))}
+          </div>
+          <div className="w-full md:w-1/2">
+            <div className="coin-value-statistics-heading">
+              <h3 className="text-xl font-bold">Other Stats Info</h3>
+            </div>
+            {genericStats.map(({ title, value }) => (
+              <div
+                className="flex max-w-md justify-between border-b border-gray-400 py-4"
+                key={title}
+              >
+                <div className="coin-stats-name">
+                  <span>{title}</span>
+                </div>
+                <span className="stats">{value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      <br />
+      {!isFetching && (
+        <div className="flex flex-col justify-between gap-10 md:flex-row">
+          <div className="w-full md:w-1/2">
+            <h3 className="text-xl font-bold">What is {cryptoDetails?.name}?</h3>
+            <p className="mt-4 w-full max-w-[460px] md:w-1/2">
+              {cryptoDetails?.description}
+            </p>
+          </div>
+          <div className="w-full md:w-1/2">
+            <h3 className="text-xl font-bold">Links</h3>
+            {cryptoDetails.links?.map((link: any) => (
+              <div
+                className="flex w-[450px] gap-20 border-b border-gray-400 py-4"
+                key={link.name}
+              >
+                <h5 className="w-40">{link.type}</h5>
+                <a href={link.url} target="_blank" rel="noreferrer">
+                  {link.name}
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 };
