@@ -1,6 +1,5 @@
 import dynamic from 'next/dynamic';
 import Loader from '@/components/ui/loader';
-import { useIsMounted } from '@/lib/hooks/use-is-mounted';
 const ModernLayout = dynamic(() => import('@/layouts/_modern'), {
   loading: () => <FallbackLoader />,
 });
@@ -17,9 +16,7 @@ export default function RootLayout({
   children,
   contentClassName,
 }: React.PropsWithChildren<{ contentClassName?: string }>) {
-  const isMounted = useIsMounted();
 
-  if (!isMounted) return null;
 
   return (
     <ModernLayout contentClassName={contentClassName}>{children}</ModernLayout>

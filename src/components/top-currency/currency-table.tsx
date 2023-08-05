@@ -1,7 +1,5 @@
 import { ChevronDown } from '@/components/icons/chevron-down';
 import Scrollbar from '@/components/ui/scrollbar';
-import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
-import { useIsMounted } from '@/lib/hooks/use-is-mounted';
 import Link from 'next/link';
 import React from 'react';
 import {

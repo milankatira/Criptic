@@ -1,0 +1,42 @@
+{
+  "ignoreUnresolved": [],
+  "ignoreUnused": [
+    "@tailwindcss/forms",
+    "@tailwindcss/typography",
+    "chartjs",
+    "next",
+    "next-pwa",
+    "react",
+    "react-dom",
+    "react-unused-components"
+  ],
+  "ignoreUnimported": [
+    "src/components/ui/avatar.tsx",
+    "src/components/ui/badge.tsx",
+    "src/components/ui/collapse.tsx",
+    "src/components/ui/collection-card.tsx",
+    "src/components/ui/dropdown.tsx",
+    "src/components/ui/hamburger.tsx",
+    "src/components/ui/input-label.tsx",
+    "src/components/ui/list-box.tsx",
+    "src/components/ui/list-card.tsx",
+    "src/components/ui/listbox.tsx",
+    "src/components/ui/logo-icon.tsx",
+    "src/components/ui/logo.tsx",
+    "src/components/ui/menu-icon.tsx",
+    "src/components/ui/menu.tsx",
+    "src/components/ui/notification-card.tsx",
+    "src/components/ui/paper.tsx",
+    "src/components/ui/reveal-content.tsx",
+    "src/components/ui/switch.tsx",
+    "src/components/ui/tab.tsx",
+    "src/components/ui/toggle-bar.tsx",
+    "src/components/ui/top-token.tsx",
+    "src/components/ui/transaction-history.tsx",
+    "src/components/ui/transaction-info.tsx",
+    "src/lib/hooks/use-click-away.ts",
+    "src/lib/hooks/use-copy-to-clipboard.ts",
+    "src/lib/hooks/use-lock-body-scroll.ts",
+    "src/lib/hooks/use-window-scroll.ts"
+  ]
+}

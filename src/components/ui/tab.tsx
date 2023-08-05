@@ -2,11 +2,7 @@ import { Tab } from '@headlessui/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import cn from 'classnames';
 
-export { Tab };
 
-//
-// Tab Item framer motion variant
-//
 export function TabItem({
   children,
   className,
@@ -57,9 +53,7 @@ export function TabPanels({
   );
 }
 
-//
-// Tab Panel framer motion variant
-//
+
 export function TabPanel({
   children,
   className,

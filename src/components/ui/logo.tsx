@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import Image from '@/components/ui/image';
 import AnchorLink from '@/components/ui/links/anchor-link';
-import { useIsMounted } from '@/lib/hooks/use-is-mounted';
 import { useIsDarkMode } from '@/lib/hooks/use-is-dark-mode';
 import lightLogo from '@/assets/images/logo.svg';
 import darkLogo from '@/assets/images/logo-white.svg';
@@ -12,7 +11,6 @@ export default function Logo() {
   const {
     query: { ...restQuery },
   } = router;
-  const isMounted = useIsMounted();
   const { isDarkMode } = useIsDarkMode();
   return (
     <AnchorLink
@@ -23,10 +21,10 @@ export default function Logo() {
       className="flex w-28 outline-none sm:w-32 4xl:w-36"
     >
       <span className="relative flex overflow-hidden">
-        {isMounted && isDarkMode && (
+        { isDarkMode && (
           <Image src={darkLogo} alt="Criptic" priority />
         )}
-        {isMounted && !isDarkMode && (
+        { !isDarkMode && (
           <Image src={lightLogo} alt="Criptic" priority />
         )}
       </span>

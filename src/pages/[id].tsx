@@ -121,7 +121,6 @@ const LiquidityPage: NextPageWithLayout = () => {
     error: additionalDataError,
   } = useQuery('additionalData', fetchAdditionalData);
 
-  console.log(cryptoDetails, 'additionalData');
   useEffect(() => {
     refetch();
   }, [selectedItem]);
@@ -163,13 +162,11 @@ const LiquidityPage: NextPageWithLayout = () => {
       title: 'Price to USD',
       value: `$ ${
         formatNumber(
-        cryptoDetails?.price && cryptoDetails?.price)}`,
-      // icon: <DollarCircleOutlined />,
+        cryptoDetails?.price && cryptoDetails?.price)}`
     },
     {
       title: 'Rank',
       value: cryptoDetails?.rank,
-      //  icon: <NumberOutlined />
     },
     {
       title: '24h Volume',
@@ -177,14 +174,12 @@ const LiquidityPage: NextPageWithLayout = () => {
         formatNumber(
         cryptoDetails && cryptoDetails['24hVolume'] && cryptoDetails['24hVolume']
       )}`,
-      // icon: <ThunderboltOutlined />,
     },
     {
       title: 'Market Cap',
       value: `$ ${
         formatNumber(
         cryptoDetails?.marketCap && cryptoDetails?.marketCap)}`,
-      // icon: <DollarCircleOutlined />,
     },
     {
       title: 'All-time-high(daily avg.)',
@@ -192,7 +187,6 @@ const LiquidityPage: NextPageWithLayout = () => {
         formatNumber(
         cryptoDetails?.allTimeHigh?.price && cryptoDetails?.allTimeHigh?.price
       )}`,
-      // icon: <TrophyOutlined />,
     },
   ];
 
@@ -200,31 +194,26 @@ const LiquidityPage: NextPageWithLayout = () => {
     {
       title: 'Number Of Markets',
       value: cryptoDetails?.numberOfMarkets,
-      // icon: <FundOutlined />,
     },
     {
       title: 'Number Of Exchanges',
       value: cryptoDetails?.numberOfExchanges,
-      // icon: <MoneyCollectOutlined />,
     },
     {
       title: 'Approved Supply',
       value: cryptoDetails?.supply?.confirmed,
-      // icon: <ExclamationCircleOutlined />,
     },
     {
       title: 'Total Supply',
       value: `$ ${formatNumber(
         cryptoDetails?.supply?.total && cryptoDetails?.supply?.total
       )}`,
-      // icon: <ExclamationCircleOutlined />,
     },
     {
       title: 'Circulating Supply',
       value: `$ ${formatNumber(
         cryptoDetails?.supply?.circulating && cryptoDetails?.supply?.circulating
       )}`,
-      // icon: <ExclamationCircleOutlined />,
     },
   ];
 
