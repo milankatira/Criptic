@@ -11,7 +11,6 @@ import 'overlayscrollbars/css/OverlayScrollbars.css';
 import { QueryClientProvider } from 'react-query';
 // base css file
 import '@/assets/css/globals.css';
-import '@/assets/css/range-slider.css';
 import '@/assets/css/scrollbar.css';
 import 'swiper/css';
 
