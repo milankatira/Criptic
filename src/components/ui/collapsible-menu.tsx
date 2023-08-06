@@ -1,8 +1,6 @@
 import ActiveLink from '@/components/ui/links/active-link';
-import { useMeasure } from '@/lib/hooks/use-measure';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 type MenuItemProps = {
   name?: string;
