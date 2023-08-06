@@ -200,10 +200,6 @@ const LiquidityPage: NextPageWithLayout = () => {
       value: cryptoDetails?.numberOfExchanges,
     },
     {
-      title: 'Approved Supply',
-      value: cryptoDetails?.supply?.confirmed,
-    },
-    {
       title: 'Total Supply',
       value: `$ ${formatNumber(
         cryptoDetails?.supply?.total && cryptoDetails?.supply?.total
